@@ -1,0 +1,88 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Pacientes/paciente.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Assets/Pacientes/ciclista.png" id="2_tex"]
+[ext_resource type="Texture2D" path="res://Assets/UI/marcas.png" id="3_marcas"]
+[ext_resource type="PackedScene" path="res://Scenes/Effects/efecto_ayuda.tscn" id="4_efecto"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p0"]
+atlas = ExtResource("2_tex")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p1"]
+atlas = ExtResource("2_tex")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p2"]
+atlas = ExtResource("2_tex")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p3"]
+atlas = ExtResource("2_tex")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p1")
+}],
+"loop": true,
+"name": &"emergencia",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p2")
+}],
+"loop": true,
+"name": &"bien",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p3")
+}],
+"loop": true,
+"name": &"mal",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cuerpo"]
+size = Vector2(10, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_zona"]
+size = Vector2(20, 18)
+
+[node name="Paciente_Ciclista" type="CharacterBody2D" groups=["PACIENTES"]]
+collision_layer = 512
+collision_mask = 0
+script = ExtResource("1_script")
+caso_id = "ciclista"
+efecto_scene = ExtResource("4_efecto")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_p")
+animation = &"emergencia"
+autoplay = "emergencia"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_cuerpo")
+
+[node name="ZonaAtencion" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaAtencion"]
+shape = SubResource("RectangleShape2D_zona")
+
+[node name="Marca" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -14)
+texture = ExtResource("3_marcas")
+hframes = 4
